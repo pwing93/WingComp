@@ -152,14 +152,32 @@ void WingCompAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
             detectionSignal = channelData [sample];
             detectionSignal = fabsf(detectionSignal);
             
+            //TO DO: Put Envelope Shaping application here
             
+            //Process signal if above threshold with conditional
+            detectionSignal = amplitudeToDecibel(detectionSignal);
             
+            //Temporary conversion of peak reduction control level straight to threshold
+            //TO DO: implement scaling algoritm for peak reduction control
+            threshold = peakReduction;
+            
+            if (detectionSignal > threshold)
+            {
+                //formula for and apply amount of signal compression
+                float ratioScaled = 1.0 - (1.0 / ratio);
+                float compression = ratioScaled * (threshold - detectionSignal);
+                compression = decibelToAmplitude(compression);
+                
+                channelData [sample] = channelData [sample] * compression;
+
+            }
             
             
         }
-
         // ..do something to the data...
     }
+    
+    
 }
 
 //==============================================================================

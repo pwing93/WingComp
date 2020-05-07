@@ -52,7 +52,7 @@ void WingCompAudioProcessorEditor::paint (Graphics& g)
 
     g.setColour (Colours::firebrick);
     g.setFont (27.0);
-    g.drawFittedText ("WINGCOMP Ver3.7", 40, 40, 175, 50, Justification::centred, 1);
+    g.drawFittedText ("WINGCOMP Ver3.8.0", 40, 40, 175, 50, Justification::centred, 1);
 }
 
 void WingCompAudioProcessorEditor::resized()
