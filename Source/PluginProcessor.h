@@ -67,8 +67,9 @@ public:
     float thresholdScaled;
     
     float ratio { 4 };
-    float attack;
-    float release;
+    float attack { 10 };
+    float release1 { 60 };
+    float release2 { 7500 };
     
 // Plugin functions defined here
     

@@ -6,7 +6,7 @@
 
   ==============================================================================
 */
-
+#include <time.h>
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
@@ -152,24 +152,35 @@ void WingCompAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffe
             detectionSignal = channelData [sample];
             detectionSignal = fabsf(detectionSignal);
             
-            //TO DO: Put Envelope Shaping application here
-            
-            //Process signal if above threshold with conditional
+            //convert detection signal to dB
             detectionSignal = amplitudeToDecibel(detectionSignal);
             
             //Temporary conversion of peak reduction control level straight to threshold
             //TO DO: implement scaling algoritm for peak reduction control
             threshold = peakReduction;
             
-            if (detectionSignal > threshold)
+            float sampleRate = getSampleRate();
+            float sampleRateMs = sampleRate/1000;
+            int currentSample = sample;
+            
+            
+            //conditional that processes while signal level below threshold after attack time
+            if (detectionSignal > threshold && currentSample > sample + (sampleRateMs * attack))
             {
+            
+                ratio = 4;
                 //formula for and apply amount of signal compression
                 float ratioScaled = 1.0 - (1.0 / ratio);
                 float compression = ratioScaled * (threshold - detectionSignal);
                 compression = decibelToAmplitude(compression);
                 
                 channelData [sample] = channelData [sample] * compression;
-
+                currentSample = 0;
+            }
+            
+            if (detectionSignal < threshold && currentSample > sample + (sampleRateMs * release2))
+            {
+                ratio = ratio - ((ratio - 1) / (sampleRateMs * release2));
             }
             
             
