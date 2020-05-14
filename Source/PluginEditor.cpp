@@ -34,6 +34,7 @@ WingCompAudioProcessorEditor::WingCompAudioProcessorEditor (WingCompAudioProcess
     peakReductionSlider.setPopupDisplayEnabled(true, false, this);
     peakReductionSlider.setTextValueSuffix(" Peak Reduction");
     peakReductionSlider.setValue(0.0);
+    peakReductionSlider.addListener(this);
     
     
     addAndMakeVisible(inGainSlider);
@@ -49,10 +50,9 @@ void WingCompAudioProcessorEditor::paint (Graphics& g)
 {
     // Background fill colour and TELETRONIX style text
     g.fillAll (Colours::gainsboro);
-
     g.setColour (Colours::firebrick);
     g.setFont (27.0);
-    g.drawFittedText ("WINGCOMP Ver3.8.0", 40, 40, 175, 50, Justification::centred, 1);
+    g.drawFittedText ("WINGCOMP Ver3.8.2", 40, 40, 175, 50, Justification::centred, 1);
 }
 
 void WingCompAudioProcessorEditor::resized()
